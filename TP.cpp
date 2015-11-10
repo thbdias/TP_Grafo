@@ -135,6 +135,33 @@ class TP{
     		return atoi(s.c_str());
 		}//end toInt
 
+
+		/** metodo que monta o grafo */
+		void montarGrafo(){
+			int grafo [countAlu] [countAlu];
+			int pesq1, pesq2;			
+
+			//preenchendo grafo
+			for (int i = 0; i < countAlu; i++){
+				pesq1 = arrayAluno[i].getPesq(); //cout << "\n"<<pesq1;
+
+				for (int j = 0; j < countAlu; j++){
+					pesq2 = arrayAluno[j].getPesq(); //cout <<" "<<pesq2;
+					grafo[i][j] = matrizDissimilar[pesq1-1][pesq2-1];
+				}//end for
+				//cout << "\n";
+			}//end for
+
+			//teste mostrar grafo
+			//for (int i = 0; i < countAlu; i++){				
+			//	for (int j = 0; j < countAlu; j++){
+					//cout << " " << grafo[i][j];	
+			//	}
+				//cout << endl;
+			//}	
+
+		}//end montarGrafo
+
 	public:
 		/* contrutor */
 		TP(){
@@ -154,6 +181,7 @@ class TP{
 			lerNomePesquisa();
 			lerAluno();
 			montarMatrizDissimilar(); 
+			montarGrafo();
 
 			//for (int i = 0; i < countPesq; i++){
 				
