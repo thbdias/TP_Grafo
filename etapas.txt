@@ -1,0 +1,16 @@
+etapas para o trabalho:
+
+1) ler arquivo areaPesquisaNome.txt e armazenar os dados em array.
+	ok.
+
+2) ler arquivo areaPesquisa.txt e armazenar em matriz [][]
+	ok.
+
+3) montar grafo: vertices: aluno    aresta: proximidade
+
+
+
+//informações importantes
+	etapa 2)
+		eu informei o tamanho da matriz manualmente para que o programa
+		rodasse. Isso não é o ideal. Preciso rever.
