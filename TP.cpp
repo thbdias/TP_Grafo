@@ -9,6 +9,7 @@
 #include <string>
 #include "Pesquisa.h"
 #include "Aluno.h"
+#include "Cluster.h"	
 #include "stdlib.h"
 using namespace std;
 
@@ -16,9 +17,13 @@ class TP{
 	private:
 		int countPesq;	 //quantidade de pesquisas
 		int countAlu;	 //quantidade de alunos
+		int countProf;   //quantidade de professores
 		int matrizDissimilar[20][20];
 		Pesquisa arrayPesquisa[20];		//pesquisas
-		Aluno *arrayAluno;              //alunos	
+		Aluno *arrayAluno;
+		Cluster *arrayCluster;
+		int *arrayAresta;
+		
 
 		/**
 		  *metodo que ler o arquivo "areaPesquisaNome.txt"
@@ -88,6 +93,23 @@ class TP{
 		}//end obterCountAlu
 
 
+		/**
+			metodo que obtem quantidade de professores
+		*/
+		void obterCountProf(){
+			int num;
+			cout << "\n\nNumero de Professores: ";
+			cin >> num;
+
+			if (num > countAlu){
+				cout << "O numero de professores deve ser menor/igual que o de alunos!";
+				obterCountProf();
+			}
+			else
+				countProf = num;
+		}//end obterCountProf
+
+
 		/* metodo que monta a matriz dissimilar */
 		void montarMatrizDissimilar(){
 			//arquivo constante
@@ -139,28 +161,73 @@ class TP{
 		/** metodo que monta o grafo */
 		void montarGrafo(){
 			int grafo [countAlu] [countAlu];
-			int pesq1, pesq2;			
+			arrayAresta = new int [countAlu*countAlu];
+			int pesq1, pesq2;
+			int k = 0;
 
 			//preenchendo grafo
 			for (int i = 0; i < countAlu; i++){
-				pesq1 = arrayAluno[i].getPesq(); //cout << "\n"<<pesq1;
+				pesq1 = arrayAluno[i].getPesq();
 
 				for (int j = 0; j < countAlu; j++){
-					pesq2 = arrayAluno[j].getPesq(); //cout <<" "<<pesq2;
+					pesq2 = arrayAluno[j].getPesq(); 
 					grafo[i][j] = matrizDissimilar[pesq1-1][pesq2-1];
 				}//end for
 				//cout << "\n";
 			}//end for
 
+			//preenchendo arrayAresta
+			for (int i = 0; i < countAlu; i++){				
+				for (int j = 0; j < countAlu; j++){
+					arrayAresta[k] = grafo[i][j];
+					k++; 
+				}//end for								
+			}//end for
+
+			//ordena o array de arestas
+			OrdenarArrayAresta(); 
+
+			//teste
+			k = 0;
+			for (int i = 0; i < (countAlu); i++){
+				for (int j = 0; j < countAlu; j++){
+					cout << arrayAresta[k] << " ";
+					k++;
+				}
+				cout << "\n";
+			}
+
 			//teste mostrar grafo
 			//for (int i = 0; i < countAlu; i++){				
 			//	for (int j = 0; j < countAlu; j++){
-					//cout << " " << grafo[i][j];	
+			//		cout << " " << grafo[i][j];	
 			//	}
-				//cout << endl;
+			//	cout << endl;
 			//}	
 
 		}//end montarGrafo
+
+
+
+	/**
+	 * Algoritmo de ordenacao por insercao.
+	 */
+	void OrdenarArrayAresta() {
+		for (int i = 1; i < (countAlu*countAlu); i++) {
+			int tmp = arrayAresta[i];
+        	int j = i - 1;
+
+        	while ((j >= 0) && (arrayAresta[j] > tmp)) {
+            	arrayAresta[j + 1] = arrayAresta[j];
+            	j--;
+         	}//end while
+         	arrayAresta[j + 1] = tmp;
+      	}//end for
+	}//end ordenarInsercao
+
+
+		
+
 
 	public:
 		/* contrutor */
@@ -182,6 +249,9 @@ class TP{
 			lerAluno();
 			montarMatrizDissimilar(); 
 			montarGrafo();
+			obterCountProf();
+
+
 
 			//for (int i = 0; i < countPesq; i++){
 				
@@ -198,20 +268,6 @@ class TP{
 
 
 //--------------------------------------------------------------------------
-
-/* CLASSE Grupo */
-class Grupo{
-	public:
-		/* construtor */
-		Grupo (){}//end construtor
-
-		/* destrutor */
-		~Grupo (){}//end destrutor
-};//end class Grupo
-
-
-//--------------------------------------------------------------------------
-
 
 
 /* metodo principal */

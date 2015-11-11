@@ -6,7 +6,7 @@ using namespace std;
 	
 Pesquisa::Pesquisa(){
 	cod = 0;
-	nome = "";
+	nome = "";	
 }//construtor
 
 

@@ -8,6 +8,7 @@ using namespace std;
 Aluno::Aluno(){
 	pesquisa = 0;
 	nome = 0;
+	cluster = -1;
 }//construtor
 
 
@@ -19,7 +20,19 @@ Aluno::Aluno(string dados){
 
 
 Aluno::~Aluno(){	
-}//destrutor		
+}//destrutor	
+
+
+/** metodo que seta o cluster que o aluno pertence */
+void Aluno::setCluster(int c){
+	cluster = c;
+}//end setCluster
+
+
+/** metodo que retorna o cluster que o aluno pertence */
+int Aluno::getCluster(){
+	return cluster;
+}//end getCluster
 
 
 /** metodo que seta o nome da area de pesquisa */

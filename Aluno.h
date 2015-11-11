@@ -11,11 +11,15 @@ class Aluno{
 		int pesquisa;	
 		int nome;
 		int array[2];
+		int cluster;
+		//int cor;
 
 	public:
 		Aluno();
 		Aluno(string dados);
 		~Aluno();
+		void setCluster(int c);
+		int getCluster ();
 		void setNome(int n);
 		int getNome ();
 		void setPesq (int p);
