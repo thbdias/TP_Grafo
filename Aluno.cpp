@@ -16,6 +16,7 @@ Aluno::Aluno(string dados){
 	liseDados(dados);
 	nome = array[0];
 	pesquisa = array[1];
+	cluster = -1;
 }//end construtor
 
 

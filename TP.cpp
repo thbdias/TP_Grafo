@@ -8,8 +8,7 @@
 #include <fstream>  //tratar arquivos
 #include <string>
 #include "Pesquisa.h"
-#include "Aluno.h"
-#include "Cluster.h"	
+#include "Aluno.h"	
 #include "stdlib.h"
 using namespace std;
 
@@ -20,9 +19,9 @@ class TP{
 		int countProf;   //quantidade de professores
 		int matrizDissimilar[20][20];
 		Pesquisa arrayPesquisa[20];		//pesquisas
-		Aluno *arrayAluno;
-		Cluster *arrayCluster;
+		Aluno *arrayAluno;		
 		int *arrayAresta;
+		int pesq1, pesq2;
 		
 
 		/**
@@ -161,17 +160,20 @@ class TP{
 		/** metodo que monta o grafo */
 		void montarGrafo(){
 			int grafo [countAlu] [countAlu];
+			int agm [countAlu][countAlu];
 			arrayAresta = new int [countAlu*countAlu];
-			int pesq1, pesq2;
+			//int clust1, clust2;
 			int k = 0;
+			int numArestaAgm = 0;
 
-			//preenchendo grafo
+			//preenchendo grafo e inicializando agm
 			for (int i = 0; i < countAlu; i++){
 				pesq1 = arrayAluno[i].getPesq();
 
 				for (int j = 0; j < countAlu; j++){
 					pesq2 = arrayAluno[j].getPesq(); 
 					grafo[i][j] = matrizDissimilar[pesq1-1][pesq2-1];
+					agm[i][j] = -1;
 				}//end for
 				//cout << "\n";
 			}//end for
@@ -187,23 +189,58 @@ class TP{
 			//ordena o array de arestas
 			OrdenarArrayAresta(); 
 
-			//teste
-			k = 0;
-			for (int i = 0; i < (countAlu); i++){
-				for (int j = 0; j < countAlu; j++){
-					cout << arrayAresta[k] << " ";
-					k++;
+			
+			//trabalhando na agm			
+				
+			for (int x = 10; x < (countAlu*countAlu); x++){  //for do arrayAresta
+
+				if (numArestaAgm < (countAlu-1)){ //se nao tiver (n-1) arestas
+
+					for (int i = 0; i < countAlu; i++){	//for linha do grafo
+
+						for (int j = 0; j < countAlu; j++){	//for coluna do grafo						
+
+							if (i == j)   //diagonal principal
+								agm [i][j] = -1; //faz nada
+							else{
+								if (grafo[i][j] == arrayAresta[x]){
+									if (agm[i][j] == -1){ //se nao tem aresta
+										agm[i][j] = arrayAresta[x]; //insere na agm
+										agm[j][i] = arrayAresta[x];//insere na agm mesma aresta
+										x++;
+										numArestaAgm++; 
+										i = j = countAlu; //sair dos 2 for //ir para o proximo x
+									}//end if
+								}//end if
+							}//end if 
+								
+						}//end for
+					}//end for
+				}//end if
+				else{
+					x = (countAlu*countAlu); //sair do for					
 				}
-				cout << "\n";
-			}
+			}//end for
+			
+
+
+			//teste arrayAresta
+			//k = 0;
+			//for (int i = 0; i < (countAlu); i++){
+			//	for (int j = 0; j < countAlu; j++){
+			//		cout << arrayAresta[k] << " ";
+			//		k++;
+			//	}
+			//	cout << "\n";
+			//}
 
 			//teste mostrar grafo
-			//for (int i = 0; i < countAlu; i++){				
-			//	for (int j = 0; j < countAlu; j++){
-			//		cout << " " << grafo[i][j];	
-			//	}
-			//	cout << endl;
-			//}	
+			for (int i = 0; i < countAlu; i++){				
+				for (int j = 0; j < countAlu; j++){
+					cout << " " << agm[i][j];	
+				}
+				cout << endl;
+			}	
 
 		}//end montarGrafo
 
