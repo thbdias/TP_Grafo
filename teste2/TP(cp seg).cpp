@@ -7,16 +7,9 @@
 #include <iostream>
 #include <fstream>  //tratar arquivos
 #include <string>
-#include <stdlib.h> //calloc
 #include "Pesquisa.h"
 #include "Aluno.h"	
 #include "stdlib.h"
-
-#define NAOVISITADO 0
-#define VISITADO 1
-#define ENCONTRADO 1
-#define NAOENCONTRADO 0
-
 using namespace std;
 
 class TP{
@@ -29,10 +22,6 @@ class TP{
 		Aluno *arrayAluno;		
 		int *arrayAresta;
 		int pesq1, pesq2;
-		int **grafo;
-		int **agm;
-		int busca;
-
 		
 
 		/**
@@ -170,42 +159,24 @@ class TP{
 
 		/** metodo que monta o grafo */
 		void montarGrafo(){
+			int grafo [countAlu] [countAlu];
+			int agm [countAlu][countAlu];
+			arrayAresta = new int [countAlu*countAlu];
+			//int clust1, clust2;
+			int k = 0;
+			int numArestaAgm = 0;
 
-			//alocacao de memoria
-			grafo = (int**) calloc(countAlu, sizeof(int*));//linha			
-			for (int i = 0; i < countAlu; i++)
-				grafo[i] = (int*) calloc(countAlu, sizeof(int));//coluna
-
-			//preenchendo grafo
+			//preenchendo grafo e inicializando agm
 			for (int i = 0; i < countAlu; i++){
 				pesq1 = arrayAluno[i].getPesq();
 
 				for (int j = 0; j < countAlu; j++){
 					pesq2 = arrayAluno[j].getPesq(); 
-					grafo[i][j] = matrizDissimilar[pesq1-1][pesq2-1];					
+					grafo[i][j] = matrizDissimilar[pesq1-1][pesq2-1];
+					agm[i][j] = -1;
 				}//end for
-				
+				//cout << "\n";
 			}//end for
-
-		}//end montarGrafo
-
-
-		/** metodo que mostra o grafo na tela */
-		void mostrarGrafo(){
-			cout << "\n\n";
-			for (int i = 0; i < countAlu; i++){				
-				for (int j = 0; j < countAlu; j++){
-					cout << " " << grafo[i][j];	
-				}
-				cout << endl;
-			}//end for
-		}//end mostrarGrafo
-
-
-		/** metodo que inicializa o arrayAresta */
-		void montarArrayAresta (){
-			int k = 0;
-			arrayAresta = new int [countAlu*countAlu];
 
 			//preenchendo arrayAresta
 			for (int i = 0; i < countAlu; i++){				
@@ -215,41 +186,12 @@ class TP{
 				}//end for								
 			}//end for
 
+			//ordena o array de arestas
 			OrdenarArrayAresta(); 
-		}//end montarArrayAresta
-
-
-		/** metodo que mostra o arrayAresta */
-		void mostrarArrayAresta (){
-			int k = 0;
-
-			for (int i = 0; i < (countAlu); i++){
-				for (int j = 0; j < countAlu; j++){
-					cout << arrayAresta[k] << " ";
-					k++;
-				}
-				cout << "\n";
-			}//end for
-		}//end mostrarArrayAresta
-
-
-		/** metodo que monta o grafo agm */
-		void montarAgm(){			
-			int numArestaAgm = 0;
-
-			//alocacao de memoria
-			agm = (int**) calloc(countAlu, sizeof(int*));//linha			
-			for (int i = 0; i < countAlu; i++)
-				agm[i] = (int*) calloc(countAlu, sizeof(int));//coluna
-			
-
-			//inicializando agm
-			for (int i = 0; i < countAlu; i++)
-				for (int j = 0; j < countAlu; j++)
-					agm[i][j] = -1;						
 
 			
-			//algoritmo de kruskal			
+			//trabalhando na agm			
+				
 			for (int x = 10; x < (countAlu*countAlu); x++){  //for do arrayAresta
 
 				if (numArestaAgm < (countAlu-1)){ //se nao tiver (n-1) arestas
@@ -263,13 +205,10 @@ class TP{
 							else{
 								if (grafo[i][j] == arrayAresta[x]){
 									if (agm[i][j] == -1){ //se nao tem aresta
-										//tem caminho entre i e j?
-										if ( !(hasCaminho(i, j)) ){ //se nao tem caminho
-											agm[i][j] = arrayAresta[x]; //insere na agm
-											agm[j][i] = arrayAresta[x];//insere na agm mesma aresta											
-											numArestaAgm++; 											
-										}//end if			
+										agm[i][j] = arrayAresta[x]; //insere na agm
+										agm[j][i] = arrayAresta[x];//insere na agm mesma aresta
 										x++;
+										numArestaAgm++; 
 										i = j = countAlu; //sair dos 2 for //ir para o proximo x
 									}//end if
 								}//end if
@@ -279,83 +218,31 @@ class TP{
 					}//end for
 				}//end if
 				else{
-					x = (countAlu*countAlu); //sair do for //laco do arrayAresta					
+					x = (countAlu*countAlu); //sair do for					
 				}
-			}//end for	
-
-			//testar aki a busca em profundidade	
-			//tem caminho entre o vertice 3 e 8?
-			//bool teste = hasCaminho(2, 2); 
-			//cout << "\n\n" << "tem caminho? = " << teste;
-						
-		}//end montarAgm
+			}//end for
+			
 
 
-		/** metodo que mostra a agm na tela */
-		void mostrarAgm (){
-			cout << "\n\n";
+			//teste arrayAresta
+			//k = 0;
+			//for (int i = 0; i < (countAlu); i++){
+			//	for (int j = 0; j < countAlu; j++){
+			//		cout << arrayAresta[k] << " ";
+			//		k++;
+			//	}
+			//	cout << "\n";
+			//}
+
+			//teste mostrar grafo
 			for (int i = 0; i < countAlu; i++){				
-				for (int j = 0; j < countAlu; j++)
+				for (int j = 0; j < countAlu; j++){
 					cout << " " << agm[i][j];	
-				
+				}
 				cout << endl;
 			}	
-		}//end mostrarAgm
 
-
-		/**
-			metodo que aplica a busca em profundidade 
-			para descobrir se tem um caminho entre dois vertices
-		*/
-		bool hasCaminho (int vi, int vf){
-			bool resp = false;
-			busca = NAOENCONTRADO;
-			//alocacao de memoria
-			int *arrayVisitado = (int*)calloc(countAlu, sizeof(int));
-
-			//iniciando arrayVisitado como nao visitado
-			for (int i = 0; i < countAlu; i++)
-				arrayVisitado[i] = NAOVISITADO;
-
-			//para cada vertice nao visitado, visitar
-			//for (int i = 0; i < countAlu; i++)
-			//	if (arrayVisitado[i] == NAOVISITADO)
-					visita (vi, vf, arrayVisitado);
-
-			//teste
-			//for (int i = 0; i < countAlu; i++)
-				//cout << "\n" << arrayVisitado[i];
-			//cout << "\n\n" << "resultado = " << busca;
-
-			if (busca == ENCONTRADO)
-				resp = true;
-
-			return resp;
-		}//end hasCaminho
-
-
-		/** metodo usado pela busca em profundidade */
-		void visita (int vertice, int vf, int *arrayVisitado){
-			arrayVisitado[vertice] = VISITADO;
-			//cout << "\n" << "vertice: " << (vertice+1);
-
-			for (int i = 0; i < countAlu; i++){
-
-				if ( agm[vertice][i] != -1 ){ //se tem vizinho
-
-					if (i == vf){
-						busca = ENCONTRADO;
-					}
-					else{
-						if ( arrayVisitado[i] == NAOVISITADO ){
-							visita (i, vf, arrayVisitado);
-						}//end if
-					}//end if
-				}//end if
-
-			}//end for
-
-		}//end visita
+		}//end montarGrafo
 
 
 
@@ -399,12 +286,7 @@ class TP{
 			lerAluno();
 			montarMatrizDissimilar(); 
 			montarGrafo();
-			montarArrayAresta();
-			//mostrarGrafo();
-			montarAgm();
-			mostrarAgm();
-			//mostrarArrayAresta();
-			//obterCountProf();
+			obterCountProf();
 
 
 
