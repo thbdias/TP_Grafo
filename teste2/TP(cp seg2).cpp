@@ -1,5 +1,6 @@
 /*
 	Trabalho Prático Grafo
+
 	Thiago Henrique Balbino Dias
 */
 
@@ -27,10 +28,12 @@ class TP{
 		Pesquisa arrayPesquisa[20];		//pesquisas
 		Aluno *arrayAluno;		
 		int *arrayAresta;
+		int *arrayArestaAgm;
 		int pesq1, pesq2;
 		int **grafo;
 		int **agm;
 		int busca;
+		int numArestaAgm;
 
 		
 
@@ -234,7 +237,7 @@ class TP{
 
 		/** metodo que monta o grafo agm */
 		void montarAgm(){			
-			int numArestaAgm = 0;
+			numArestaAgm = 0;
 
 			//alocacao de memoria
 			agm = (int**) calloc(countAlu, sizeof(int*));//linha			
@@ -267,10 +270,9 @@ class TP{
 											agm[i][j] = arrayAresta[x]; //insere na agm
 											agm[j][i] = arrayAresta[x];//insere na agm mesma aresta											
 											numArestaAgm++; 											
-											x++;
-											i = j = countAlu; //sair dos 2 for //ir para o proximo x
-										}//end if		
-										
+										}//end if			
+										x++;
+										i = j = countAlu; //sair dos 2 for //ir para o proximo x
 									}//end if
 								}//end if
 							}//end if 
@@ -320,12 +322,7 @@ class TP{
 			//para cada vertice nao visitado, visitar
 			//for (int i = 0; i < countAlu; i++)
 			//	if (arrayVisitado[i] == NAOVISITADO)
-					visita (vi, vf, arrayVisitado);
-
-			//teste
-			//for (int i = 0; i < countAlu; i++)
-				//cout << "\n" << arrayVisitado[i];
-			//cout << "\n\n" << "resultado = " << busca;
+					visita (vi, vf, arrayVisitado);			
 
 			if (busca == ENCONTRADO)
 				resp = true;
@@ -336,8 +333,7 @@ class TP{
 
 		/** metodo usado pela busca em profundidade */
 		void visita (int vertice, int vf, int *arrayVisitado){
-			arrayVisitado[vertice] = VISITADO;
-			//cout << "\n" << "vertice: " << (vertice+1);
+			arrayVisitado[vertice] = VISITADO;			
 
 			for (int i = 0; i < countAlu; i++){
 
@@ -354,7 +350,6 @@ class TP{
 				}//end if
 
 			}//end for
-
 		}//end visita
 
 
@@ -374,6 +369,68 @@ class TP{
          	arrayAresta[j + 1] = tmp;
       	}//end for
 	}//end ordenarInsercao
+
+
+	/**
+	 * Algoritmo de ordenacao por insercao.
+	 */
+	void ordenarArrayArestaAgm() {
+		for (int i = 1; i < (numArestaAgm); i++) {
+			int tmp = arrayArestaAgm[i];
+        	int j = i - 1;
+
+        	while ((j >= 0) && (arrayArestaAgm[j] > tmp)) {
+            	arrayArestaAgm[j + 1] = arrayArestaAgm[j];
+            	j--;
+         	}//end while
+         	arrayArestaAgm[j + 1] = tmp;
+      	}//end for
+	}//end ordenarArrayArestaAgm
+
+
+	/***/
+	void montarCluster (){
+		obterCountProf();  //numero professores
+		int corte = (countProf-1); //numero de cortes na agm
+		montarArrayArestaAgm();
+		//mostrarArrayArestaAgm();
+
+
+	}//end montarCluster
+
+
+	/** metodo que coloca as arestas da agm em um array e pede pra ordenar*/
+	void montarArrayArestaAgm(){
+		int k = 0;
+		cout << "\n\n"<< "numero arestas agm = " << numArestaAgm << "\n\n";
+		arrayArestaAgm = new int [numArestaAgm];
+
+		//preenchendo arrayArestaAgm
+		for (int i = 0; i < numArestaAgm; i++){				
+			for (int j = 0; j < numArestaAgm; j++){
+				if (agm[i][j] != -1){
+					arrayArestaAgm[k] = agm[i][j];
+					k++; 
+				}//end if
+			}//end for								
+		}//end for
+
+		ordenarArrayArestaAgm();
+	}//end montarArrayArestaAgm
+
+
+	/** metodo que mostra o arrayArestaAgm*/
+	void mostrarArrayArestaAgm(){
+		int k = 0;
+
+		for (int i = 0; i < numArestaAgm; i++){
+			for (int j = 0; j < numArestaAgm; j++){
+				cout << arrayArestaAgm[k] << " ";
+				k++;
+			}
+			cout << "\n";
+		}//end for
+	}//end mostrarArrayArestaAgm
 
 
 		
@@ -404,7 +461,7 @@ class TP{
 			montarAgm();
 			mostrarAgm();
 			//mostrarArrayAresta();
-			//obterCountProf();
+			//montarCluster();
 
 
 
