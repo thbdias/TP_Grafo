@@ -8,6 +8,7 @@
 #include <fstream>  //tratar arquivos
 #include <string>
 #include <stdlib.h> //calloc
+#include <stdio.h>
 #include "Pesquisa.h"
 #include "Aluno.h"	
 #include "stdlib.h"
@@ -192,7 +193,6 @@ class TP{
 				}//end for
 				
 			}//end for
-
 		}//end montarGrafo
 
 
@@ -288,13 +288,7 @@ class TP{
 				else{
 					x = (countAlu*countAlu); //sair do for //laco do arrayAresta					
 				}
-			}//end for	
-
-			//testar aki a busca em profundidade	
-			//tem caminho entre o vertice 3 e 8?
-			//bool teste = hasCaminho(2, 2); 
-			//cout << "\n\n" << "tem caminho? = " << teste;
-						
+			}//end for										
 		}//end montarAgm
 
 
@@ -376,15 +370,13 @@ class TP{
 					}
 				}//end if
 
-			}//end for
-
-			//mostrarFila(); //teste
+			}//end for			
 
 			//retirar primeiro elemento da fila
 			elemento = removerFila();
+
 			if (elemento != NULO)
 				visitaLarg(elemento, arrayVisitado, cluster);
-
 
 		}//end visitaLarg
 
@@ -448,12 +440,10 @@ class TP{
 							if (arrayArestaAgm[w] == agm[i][j]){
 								agm[i][j] = -1; //fazendo corte na agm
 								agm[j][i] = -1; //fazendo corte na agm
-							}										
+							}//end if										
 
 						}//end for
-
 					}//end if	
-
 				}//end for
 			}//end for
 
@@ -477,21 +467,7 @@ class TP{
 						visitaLarg (i, arrayVisitado, countProf);
 					}//end if						
 				}//end if
-			}//end for
-
-
-			
-			//testes
-			//mostrarArrayArestaAgm(); //funcionando
-			//mostrarAgm();
-			//for (int i = 0; i < countAlu; i++)
-			//	cout << "\n" << "arrayVisitado["<<i<<"] = "<< arrayVisitado[i];
-			//cout << "\n\n" << "cluster = " << cluster;
-			for (int i = 0; i < countAlu; i++)
-				cout << "\n" << "aluno["<<(i+1)<<"] = "<< arrayAluno[i].getCluster();
-			cout << "\n\n";
-
-
+			}//end for		
 		}//end montarCluster
 
 
@@ -566,9 +542,13 @@ class TP{
 		/**metodo que mostra os clusters formados */
 		void mostrarCluster (){
 			string nome = "";
+			char url[]="saida.txt";
+			FILE *arq;
+
+			arq = fopen(url, "w"); //abre arquivo
 
 			for (int i = 1; i <= countProf; i++){
-				cout << "\n\n Cluster do Professor: (nome: " << i << ") \n" ;
+				fprintf(arq, "\n\n Cluster do Professor: (nome: %d ) \n", i);				
 
 				for (int j = 0; j < countAlu; j++){
 
@@ -581,20 +561,15 @@ class TP{
 							}//end if
 						}//end for
 
-						cout << "\t Aluno -> nome: " << (j+1) << ", \tpesquisa: " << nome << "\n";						
+						fprintf(arq, "\t Aluno -> nome: %d, \t pesquisa: %s \n", (j+1), nome.c_str());						
 
 					}//end if
 				}//end for
 
 			}//end for
 
-		}//end mostrarCluster
-
-
-
-
-		
-
+			fclose(arq); //fecha arquivo
+		}//end mostrarCluster		
 
 	public:
 		/* contrutor */
@@ -616,40 +591,19 @@ class TP{
 			lerAluno();
 			montarMatrizDissimilar(); 
 			montarGrafo();
-			montarArrayAresta();
-			//mostrarGrafo();
-			montarAgm();
-			//mostrarAgm();
-			//mostrarArrayAresta();
-			montarCluster();
-			//mostrarAgm();
+			montarArrayAresta();			
+			montarAgm();			
+			montarCluster();			
 			mostrarCluster();
-
-
-
-			//for (int i = 0; i < countPesq; i++){
-				
-			//	for (int j = 0; j < countPesq; j++){
-			//		cout << " " << matrizDissimilar[i][j];					
-			//	}
-			//	cout << endl;
-			//}			
-
-			//testes
 
 		}//end controle
 };
 
-
-//--------------------------------------------------------------------------
-
-
+//-----------------------------------------------------------------
 /* metodo principal */
 int main (){
 	TP tp;	
 
-	tp.controle();
-
-	cout << "\n\nOK, funcionando.\n\n\n";
+	tp.controle();	
 	
 }//end main

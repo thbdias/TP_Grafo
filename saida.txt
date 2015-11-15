@@ -1,0 +1,59 @@
+
+
+ Cluster do Professor: (nome: 1 ) 
+	 Aluno -> nome: 1, 	 pesquisa: Projeto e Análise de Algoritmos 
+	 Aluno -> nome: 7, 	 pesquisa: Jogos Digitais 
+	 Aluno -> nome: 10, 	 pesquisa: Teoria dos Grafos 
+	 Aluno -> nome: 15, 	 pesquisa: Jogos Digitais 
+	 Aluno -> nome: 24, 	 pesquisa: Aprendizado de Máquina 
+	 Aluno -> nome: 29, 	 pesquisa: Aprendizado de Máquina 
+	 Aluno -> nome: 31, 	 pesquisa: Projeto e Análise de Algoritmos 
+	 Aluno -> nome: 34, 	 pesquisa: Jogos Digitais 
+	 Aluno -> nome: 38, 	 pesquisa: Teoria dos Grafos 
+
+
+ Cluster do Professor: (nome: 2 ) 
+	 Aluno -> nome: 2, 	 pesquisa: Teoria de Linguagens 
+	 Aluno -> nome: 3, 	 pesquisa: Compiladores 
+	 Aluno -> nome: 5, 	 pesquisa: Teoria de Linguagens 
+	 Aluno -> nome: 18, 	 pesquisa: Análise e Otimização de Código 
+	 Aluno -> nome: 41, 	 pesquisa: Análise e Otimização de Código 
+
+
+ Cluster do Professor: (nome: 3 ) 
+	 Aluno -> nome: 4, 	 pesquisa: Visão Computacional 
+	 Aluno -> nome: 6, 	 pesquisa: Bancos de Dados Geográficos 
+	 Aluno -> nome: 8, 	 pesquisa: Sistemas Operacionais 
+	 Aluno -> nome: 9, 	 pesquisa: Bancos de Dados Geográficos 
+	 Aluno -> nome: 11, 	 pesquisa: Otimização Linear e Não Linear 
+	 Aluno -> nome: 12, 	 pesquisa: Engenharia de Software 
+	 Aluno -> nome: 13, 	 pesquisa: Arquitetura de Computadores 
+	 Aluno -> nome: 14, 	 pesquisa: Engenharia de Software 
+	 Aluno -> nome: 16, 	 pesquisa: Redes de Computadores 
+	 Aluno -> nome: 17, 	 pesquisa: Sistemas Paralelos e Distribuídos 
+	 Aluno -> nome: 19, 	 pesquisa: Arquitetura de Computadores 
+	 Aluno -> nome: 20, 	 pesquisa: Otimização Linear e Não Linear 
+	 Aluno -> nome: 21, 	 pesquisa: Sistemas Paralelos e Distribuídos 
+	 Aluno -> nome: 22, 	 pesquisa: Arquitetura de Computadores 
+	 Aluno -> nome: 23, 	 pesquisa: Nanotecnologia Computacional 
+	 Aluno -> nome: 25, 	 pesquisa: Nanotecnologia Computacional 
+	 Aluno -> nome: 26, 	 pesquisa: Sistemas Paralelos e Distribuídos 
+	 Aluno -> nome: 27, 	 pesquisa: Redes de Computadores 
+	 Aluno -> nome: 28, 	 pesquisa: Otimização Linear e Não Linear 
+	 Aluno -> nome: 30, 	 pesquisa: Visão Computacional 
+	 Aluno -> nome: 32, 	 pesquisa: Bancos de Dados 
+	 Aluno -> nome: 33, 	 pesquisa: Sistemas Operacionais 
+	 Aluno -> nome: 35, 	 pesquisa: Bancos de Dados Geográficos 
+	 Aluno -> nome: 36, 	 pesquisa: Sistemas Operacionais 
+	 Aluno -> nome: 37, 	 pesquisa: Nanotecnologia Computacional 
+	 Aluno -> nome: 39, 	 pesquisa: Bancos de Dados 
+	 Aluno -> nome: 40, 	 pesquisa: Sistemas Operacionais 
+	 Aluno -> nome: 42, 	 pesquisa: Visão Computacional 
+	 Aluno -> nome: 43, 	 pesquisa: Redes de Computadores 
+	 Aluno -> nome: 44, 	 pesquisa: Arquitetura de Computadores 
+	 Aluno -> nome: 45, 	 pesquisa: Bancos de Dados Geográficos 
+	 Aluno -> nome: 46, 	 pesquisa: Sistemas Paralelos e Distribuídos 
+	 Aluno -> nome: 47, 	 pesquisa: Arquitetura de Software  
+	 Aluno -> nome: 48, 	 pesquisa: Redes de Computadores 
+	 Aluno -> nome: 49, 	 pesquisa: Engenharia de Software 
+	 Aluno -> nome: 50, 	 pesquisa: Bancos de Dados Geográficos 
