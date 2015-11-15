@@ -1,4 +1,0 @@
-Matematica: 10.00
-Fisica: 15.00
-Quimica: 20.00
-Media final: 15.00
