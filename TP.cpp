@@ -16,6 +16,7 @@
 #define VISITADO 1
 #define ENCONTRADO 1
 #define NAOENCONTRADO 0
+#define NULO -1
 
 using namespace std;
 
@@ -34,6 +35,9 @@ class TP{
 		int **agm;
 		int busca;
 		int numArestaAgm;
+		int *arrayFila; //para busca largura
+		int inicioFila;	//para busca largura
+		int fimFila;	//para busca largura
 
 		
 
@@ -354,6 +358,37 @@ class TP{
 		}//end visita
 
 
+		/** metodo usado pela busca em largura */
+		void visitaLarg (int vertice, int *arrayVisitado, int cluster){
+			arrayVisitado[vertice] = VISITADO;
+			arrayAluno[vertice].setCluster(cluster);
+			int elemento = NULO;
+
+			for (int i = 0; i < countAlu; i++){
+
+				if (agm[vertice][i] != -1) { //se tem vizinho
+					//se vizinho não foi vizitado
+					if (arrayVisitado[i] == NAOVISITADO){
+						//inserir vizinho nao visitado na fila
+						//e marca como vizitado
+						inserirFila(i); 
+						arrayVisitado[i] == VISITADO;
+					}
+				}//end if
+
+			}//end for
+
+			//mostrarFila(); //teste
+
+			//retirar primeiro elemento da fila
+			elemento = removerFila();
+			if (elemento != NULO)
+				visitaLarg(elemento, arrayVisitado, cluster);
+
+
+		}//end visitaLarg
+
+
 
 		/**
 		 * Algoritmo de ordenacao por insercao.
@@ -376,7 +411,7 @@ class TP{
 		 * Algoritmo de ordenacao por insercao.
 		 */
 		void ordenarArrayArestaAgm() {
-			for (int i = 1; i < (numArestaAgm*2); i++) {
+			for (int i = 1; i < (numArestaAgm); i++) {
 				int tmp = arrayArestaAgm[i];
 	        	int j = i - 1;
 
@@ -394,7 +429,67 @@ class TP{
 			obterCountProf();  //numero professores
 			int corte = (countProf-1); //numero de cortes na agm
 			montarArrayArestaAgm();
+			int k = numArestaAgm - corte; 
+			int cluster = 0;
+			arrayFila = new int [countAlu]; //para busca Largura
+			inicioFila = fimFila = 0;
+			//alocacao de memoria
+			int *arrayVisitado = (int*)calloc(countAlu, sizeof(int));
+			
+			
+			//atualizar agm com cortes
+			for (int i = 0; i < countAlu; i++){				
+				for (int j = (i+1); j < countAlu; j++){
+					
+					if (agm[i][j] != -1){ //se tiver aresta
+
+						for (int w = k; w < numArestaAgm; w++){ //andar sobre arrayArestaAgm
+
+							if (arrayArestaAgm[w] == agm[i][j]){
+								agm[i][j] = -1; //fazendo corte na agm
+								agm[j][i] = -1; //fazendo corte na agm
+							}										
+
+						}//end for
+
+					}//end if	
+
+				}//end for
+			}//end for
+
+
+			//iniciando arrayVisitado como nao visitado
+			for (int i = 0; i < countAlu; i++)
+				arrayVisitado[i] = NAOVISITADO;
+
+
+			//busca largura
+			//para cada vertice nao visitado, visitar
+			for (int i = 0; i < countAlu; i++){
+				if (arrayVisitado[i] == NAOVISITADO){
+					if (cluster < countProf){
+						cluster++;
+						arrayAluno[i].setCluster(cluster);
+						visitaLarg (i, arrayVisitado, cluster);
+					}
+					else {
+						arrayAluno[i].setCluster(countProf);
+						visitaLarg (i, arrayVisitado, countProf);
+					}//end if						
+				}//end if
+			}//end for
+
+
+			
+			//testes
 			//mostrarArrayArestaAgm(); //funcionando
+			//mostrarAgm();
+			//for (int i = 0; i < countAlu; i++)
+			//	cout << "\n" << "arrayVisitado["<<i<<"] = "<< arrayVisitado[i];
+			cout << "\n\n" << "cluster = " << cluster;
+			for (int i = 0; i < countAlu; i++)
+				cout << "\n" << "aluno["<<(i+1)<<"] = "<< arrayAluno[i].getCluster();
+			
 
 
 		}//end montarCluster
@@ -404,17 +499,16 @@ class TP{
 		void montarArrayArestaAgm(){
 			int k = 0;
 			
-			arrayArestaAgm = new int [numArestaAgm*2];
+			arrayArestaAgm = new int [numArestaAgm];	
 
-			//preenchendo arrayArestaAgm
-			for (int i = 0; i < numArestaAgm; i++){				
-				for (int j = 0; j < numArestaAgm; j++){
+			for (int i = 0; i < countAlu; i++){				
+				for (int j = (i+1); j < countAlu; j++){
 					if (agm[i][j] != -1){
 						arrayArestaAgm[k] = agm[i][j];
 						k++; 
 					}//end if
 				}//end for								
-			}//end for
+			}//end for			
 
 			ordenarArrayArestaAgm();
 		}//end montarArrayArestaAgm
@@ -423,9 +517,52 @@ class TP{
 		/** metodo que mostra o arrayArestaAgm*/
 		void mostrarArrayArestaAgm(){		
 
-			for (int i = 0; i < (numArestaAgm*2); i++)		
+			for (int i = 0; i < (numArestaAgm); i++)		
 				cout << arrayArestaAgm[i] << " ";			
 		}//end mostrarArrayArestaAgm
+
+
+		//Insere elemento na fila, no indice "fim".
+		void inserirFila(int elemento) {
+   			if (((fimFila + 1) % countAlu) == inicioFila) {
+      			cout << "Erro ao inserir!";
+   			} 
+   			else {
+		      arrayFila[fimFila] = elemento;
+		      fimFila = (fimFila + 1) % countAlu;
+			}
+		}//end inserirFila
+
+
+		//Remove elemento da fila, do indice "inicio".
+		int removerFila() {
+		   int elemento = NULO;
+
+		   if (inicioFila == fimFila) {
+		      //cout << "Erro ao remover!";
+		   } 
+		   else {
+		      elemento = arrayFila[inicioFila];
+		      inicioFila = (inicioFila + 1) % countAlu;
+		   }		   
+		   return elemento;
+		}//end removerFila
+
+
+		//Mostra os array separados por espacos.
+		void mostrarFila() {
+		   printf("[ ");
+
+		   int i = inicioFila;
+		   while (i != fimFila) {
+		      printf("%d ", arrayFila[i]);
+		      i = ((i + 1) % countAlu); // Fila circular.
+		   }
+
+		   printf("] \n");
+		}
+
+
 
 
 		
@@ -454,9 +591,10 @@ class TP{
 			montarArrayAresta();
 			//mostrarGrafo();
 			montarAgm();
-			mostrarAgm();
+			//mostrarAgm();
 			//mostrarArrayAresta();
 			montarCluster();
+			//mostrarAgm();
 
 
 
