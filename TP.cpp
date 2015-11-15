@@ -424,7 +424,7 @@ class TP{
 		}//end ordenarArrayArestaAgm
 
 
-		/***/
+		/** metodo que monta os clusters */
 		void montarCluster (){
 			obterCountProf();  //numero professores
 			int corte = (countProf-1); //numero de cortes na agm
@@ -486,10 +486,10 @@ class TP{
 			//mostrarAgm();
 			//for (int i = 0; i < countAlu; i++)
 			//	cout << "\n" << "arrayVisitado["<<i<<"] = "<< arrayVisitado[i];
-			cout << "\n\n" << "cluster = " << cluster;
+			//cout << "\n\n" << "cluster = " << cluster;
 			for (int i = 0; i < countAlu; i++)
 				cout << "\n" << "aluno["<<(i+1)<<"] = "<< arrayAluno[i].getCluster();
-			
+			cout << "\n\n";
 
 
 		}//end montarCluster
@@ -560,7 +560,35 @@ class TP{
 		   }
 
 		   printf("] \n");
-		}
+		}//end mostrarFila
+
+
+		/**metodo que mostra os clusters formados */
+		void mostrarCluster (){
+			string nome = "";
+
+			for (int i = 1; i <= countProf; i++){
+				cout << "\n\n Cluster do Professor: (nome: " << i << ") \n" ;
+
+				for (int j = 0; j < countAlu; j++){
+
+					if (arrayAluno[j].getCluster() == i){						
+
+						for (int w = 0; w < 20; w++){
+							if (arrayAluno[j].getPesq() == arrayPesquisa[w].getCod()){								
+								nome = arrayPesquisa[w].getNome();
+								w = 20; //sair do for
+							}//end if
+						}//end for
+
+						cout << "\t Aluno -> nome: " << (j+1) << ", \tpesquisa: " << nome << "\n";						
+
+					}//end if
+				}//end for
+
+			}//end for
+
+		}//end mostrarCluster
 
 
 
@@ -595,6 +623,7 @@ class TP{
 			//mostrarArrayAresta();
 			montarCluster();
 			//mostrarAgm();
+			mostrarCluster();
 
 
 
